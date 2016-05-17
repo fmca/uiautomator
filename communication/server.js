@@ -11,7 +11,7 @@ class Server {
 		this._counter = 0;
 		this._callbacks = {};
 		this._setup = new Setup(['libs/app.apk', 'libs/app-test.apk'], port);
-		this._setup.init(false);
+		//this._setup.init(false);
 	}
 
 	isAlive(cb) {

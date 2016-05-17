@@ -4,14 +4,19 @@ var sync = require("synchronize");
 var ui = require("./ui")
 var d = new ui.Device();
 
-sync(d.server, 'isAlive');
+sync(d, 'isConnected');
+sync(d, 'home');
+sync(d, 'volumeUp');
+sync(d, 'volumeDown');
 
 
 sync.fiber(function(){
     
-    var alive = d.server.isAlive();
-    console.log(alive);
-    d.home(function(err, data){
-        console.log(err, data);
-    });
+    while(!d.isConnected()){
+        //wait
+    }
+    d.home();
+    d.volumeUp();
+    d.volumeDown();
+    
 })
