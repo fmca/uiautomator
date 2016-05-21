@@ -1,7 +1,6 @@
 'use strict'
 
 var request = require("request");
-var sync = require("synchronize");
 var Setup = require("./setup");
 const DELAY = 500;
 const HOST = 'http://localhost';
