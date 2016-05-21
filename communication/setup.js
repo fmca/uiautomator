@@ -8,10 +8,10 @@ class Setup {
 		this._port = port;
 	}
 
-	init(install) {
-		if (install) this._install();
+	init(cb) {
+		this._install();
 		this._forward();
-		this._start();
+		this._start();		
 	}
 
 	_install() {
@@ -27,6 +27,10 @@ class Setup {
 	_start() {
 		this._uiautomator_process = proc.spawn('adb', ['shell', 'am', 'instrument', '-w',
 			'com.github.uiautomator.test/android.support.test.runner.AndroidJUnitRunner']);
+	}
+
+	process(){
+		return this._uiautomator_process;
 	}
 }
 
