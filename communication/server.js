@@ -1,5 +1,7 @@
 'use strict'
 
+var path = require('path')
+var fs = require('fs');
 var request = require("request");
 var Setup = require("./setup");
 const DELAY = 500;
@@ -7,6 +9,10 @@ const HOST = 'http://localhost';
 const PORT = 9008;
 const MAX_CONNECTION_TRIES = 10;
 const CONNECTION_TRY_DELAY = 1000;
+
+var getPath = function (relativePath) {
+	return path.join(path.dirname(fs.realpathSync(__filename)), relativePath);
+}
 
 class Server {
 
@@ -16,7 +22,7 @@ class Server {
 		this.stop_url = this.url  + '/stop';
 		this._counter = 0;
 		this._callbacks = {};
-		this._setup = new Setup(['libs/app.apk', 'libs/app-test.apk'], PORT);
+		this._setup = new Setup([getPath('../libs/app.apk'), getPath('../libs/app-test.apk')], PORT);
 		this._setup.init();
 		this._connectionTries = 0;
 		this._responseCallback = cb;

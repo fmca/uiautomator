@@ -4,7 +4,7 @@ NodeJS wrapper for UiAutomator
 Installation
 =======
 ```
-npm install uiautomator
+npm install uiautomator-wrapper
 ```
 
 Usage
@@ -15,7 +15,11 @@ var Test = require('uiautomator-wrapper');
 new Test((err, device) => {
     device.click({description: 'Apps'}, (err, result) => {
         //Handle result
-        device.stop();
+        device.info((err, info) => {
+            console.log(err, info);
+            device.stop();
+        })
+        
     });
 });
 ```
