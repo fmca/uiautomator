@@ -52,11 +52,12 @@ Default options:
 ### API
 
 * Device info
-* ```javascript
+
+    ```javascript
     device.info((err, info) => {})
     ```
 * Key events
-* ```javascript
+    ```javascript
     //Press home
     device.home(callback)
     //Press back
