@@ -1,14 +1,12 @@
 # uiautomator [Alpha]
 NodeJS wrapper for UiAutomator
 
-Installation
-=======
+### Installation
 ```
 npm install uiautomator-wrapper
 ```
 
-Usage
-=======
+### Usage
 ```javascript
 var Test = require('uiautomator-wrapper');
 
@@ -19,37 +17,61 @@ new Test((err, device) => {
             console.log(err, info);
             device.stop();
         })
-        
     });
 });
 ```
 
-Example (Sync)
-=======
-You can use any strategy to synchronize the test, but here follows one using [async](https://github.com/caolan/async) library.
+### Device setup
 
 ```javascript
 var Test = require('uiautomator-wrapper');
-var async = require('async');
+var options = {
+    serial: "emulator5554"
+}
 
 new Test((err, device) => {
-
-    async.series([
-        (cb) => { device.wakeUp(cb) },
-        (cb) => { device.click({description: 'Apps'}, cb) },
-        (cb) => { device.click({text: 'Gmail'}, cb) }
-    ],
-        (err, results) => { device.stop() }
-    );
-
-});
+    /* ... */
+}, options);
 ```
 
-Acknowledgement
-========
+Default options:
+```javascript
+{
+    hostname: 'localhost',
+    delay: 500, //delay between commands
+    port: 9008,
+    devicePort: 9008,
+    connectionMaxTries: 5,
+    connectionTriesDelay: 1000,
+    serial: undefined //Not necessary if there is only one device available
+}
+
+```
+
+
+### API
+
+* Device info
+* ```javascript
+    device.info((err, info) => {})
+    ```
+* Key events
+* ```javascript
+    //Press home
+    device.home(callback)
+    //Press back
+    device.back(callback)
+    ```
+    * All key functions:
+        ```home```, ```volumeUp```, ```volumeDown```, ```volumeMute```, ```back```, ```right```, ```left```, ```up```, ```down```, ```menu```, ```search```, ```center```, ```enter```, ```delete```, ```recent```, ```camera```, ```power```
+
+* Selectors
+    ```javascript
+    device.click({description: 'Apps'}, callback);
+    ```
+    * Supported Selectors:
+        ```text```,```textContains```,```textMatches```,```textStartsWith```,```className```,```classNameMatches```,```description```,```descriptionContains```,```descriptionMatches```,```descriptionStartsWith```,```checkable```,```checked```,```clickable```,```longClickable```,```scrollable```,```enabled```,```focusable```,```focused```,```selected```,```packageName```,```packageNameMatches```,```resourceId```,```resourceIdMatches```,```index```,```instance```
+        
+
+### Acknowledgement
 This package is inspired by [xiaocong/uiautomator](https://github.com/xiaocong/uiautomator) python library, even using its [android-uiautomator-server](https://github.com/xiaocong/android-uiautomator-server).
-
-
-Considerations
-========
-I started this repository to start learning NodeJS. Any suggestion or advice is welcome.
