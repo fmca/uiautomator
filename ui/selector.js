@@ -37,6 +37,9 @@ class Selector{
 			if(value){
 				this.mask = this.mask | masks[field];
 			}
+            if(field == "childOrSiblingSelector"){
+                this[field] = new Selector(fields[field]);
+            }
 			this[field] = value;
 		}
 	}

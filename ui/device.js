@@ -6,7 +6,7 @@ var Selector = require("./selector");
 
 class Device {
     
-    constructor(cb) {        
+    constructor(cb, options) {        
         var pressKeyMethods = ['home', 'volumeUp', 'volumeDown', 'volumeMute', 'back', 'right', 'left',
             'up', 'down', 'menu', 'search', 'center', 'enter', 'delete', 'recent', 'camera', 'power'
         ];
@@ -16,7 +16,7 @@ class Device {
         var self = this;
         this._server = new Server(function(err, data){
             cb(err, self);
-        }); 
+        }, options); 
     }
     
     stop(cb){

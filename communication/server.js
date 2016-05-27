@@ -3,12 +3,16 @@
 var path = require('path')
 var fs = require('fs');
 var request = require("request");
+var url = require("url");
 var Setup = require("./setup");
-const DELAY = 500;
-const HOST = 'http://localhost';
-const PORT = 9008;
-const MAX_CONNECTION_TRIES = 10;
-const CONNECTION_TRY_DELAY = 1000;
+var defaultOptions = {
+	hostname: 'localhost',
+	delay: 500,
+	port: 9008,
+	devicePort: 9008,
+	connectionMaxTries: 5,
+	connectionTriesDelay: 1000
+}
 
 var getPath = function (relativePath) {
 	return path.join(path.dirname(fs.realpathSync(__filename)), relativePath);
@@ -16,19 +20,23 @@ var getPath = function (relativePath) {
 
 class Server {
 
-	constructor(cb) {
-		this.url = new String(HOST) + ':' + new String(PORT);
-		this.jsonrpc_url = this.url + '/jsonrpc/0';
-		this.stop_url = this.url  + '/stop';
+	constructor(cb, newOptions) {
+		this.options = Object.assign({}, defaultOptions, newOptions);
+		this.url = url.format({protocol: 'http', hostname: this.options.hostname, port: this.options.port});
+		this.jsonrpc_url = url.resolve(this.url, '/jsonrpc/0');
+		this.stop_url = url.resolve(this.url, '/stop');
 		this._counter = 0;
 		this._callbacks = {};
-		this._setup = new Setup([getPath('../libs/app.apk'), getPath('../libs/app-test.apk')], PORT);
-		this._setup.init();
+		this._setup = new Setup([
+			getPath('../libs/app.apk'),
+			getPath('../libs/app-test.apk')],
+			this.options);
 		this._connectionTries = 0;
 		this._responseCallback = cb;
-		this.verifyConnection();
+		this._setup.init(() => {
+			this.verifyConnection();
+		});
 	}
-
 	stop(){
 		request.get(this.stop_url, {}, function(err, body, result){
 		});
@@ -41,7 +49,7 @@ class Server {
 		setTimeout(() => {
 			self.isAlive((err, result) => {
 				if(err){
-					if(self.connectionTries > MAX_CONNECTION_TRIES){
+					if(self.connectionTries > self.options.connectionMaxTries){
 						self._responseCallback(err, this)
 					}else{
 						self.connectionTries += 1;
@@ -51,7 +59,7 @@ class Server {
 					self._responseCallback(err, this);
 				}
 			})
-		}, CONNECTION_TRY_DELAY);
+		}, this.options);
 		
 	}
 
@@ -94,7 +102,7 @@ class Server {
 					}
 				}
 			})
-		}, DELAY);
+		}, self.options.delay);
 		
 	}
 }
