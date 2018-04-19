@@ -1,1 +1,3 @@
-exports.Device = require("./device").Device;
+import { Device } from './device';
+
+export default Device;

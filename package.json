@@ -21,6 +21,11 @@
     "request": "^2.72.0"
   },
   "devDependencies": {
-    "async": "^2.0.0-rc.5"
+    "async": "^2.0.0-rc.5",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3"
   }
 }

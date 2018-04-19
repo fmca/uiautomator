@@ -1,5 +1,4 @@
-'use strict'
-var Device = require("./ui").Device;
+import { Device } from './ui';
 
-module.exports = Device;
+export default Device;
 
