@@ -1,6 +1,6 @@
 {
   "name": "uiautomator-wrapper",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "NodeJS wrapper for UiAutomator",
   "main": "dist/index.js",
   "scripts": {
