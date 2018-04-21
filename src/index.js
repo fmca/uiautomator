@@ -1,4 +1,4 @@
 import Device from './ui';
 
-export default Device;
+module.exports = Device;
 
