@@ -56,10 +56,9 @@ var Server = function () {
   _createClass(Server, [{
     key: 'start',
     value: function start() {
-      var _this = this;
-
-      return this._setup.init().then(function () {
-        _this.verifyConnection();
+      var self = this;
+      return self._setup.init().then(function () {
+        return self.verifyConnection();
       });
     }
 
@@ -82,22 +81,24 @@ var Server = function () {
 
   }, {
     key: 'verifyConnection',
-    value: function verifyConnection() {
-      var _this2 = this;
+    value: function verifyConnection(parentResolve, parentReject) {
+      var _this = this;
 
       var self = this;
       return new Promise(function (resolve, reject) {
+        var chosenResolve = parentResolve || resolve;
+        var chosenReject = parentReject || reject;
         setTimeout(function () {
           self.isAlive().then(function (alive) {
             if (!alive) {
               if (self.connectionTries > self.options.connectionMaxTries) {
-                return reject();
+                return chosenReject();
               }
-              return self.verifyConnection();
+              return self.verifyConnection(chosenResolve, chosenReject);
             }
-            return resolve(self);
+            return chosenResolve(self);
           });
-        }, _this2.options);
+        }, _this.options.connectionTriesDelay);
       });
     }
 
@@ -108,10 +109,10 @@ var Server = function () {
   }, {
     key: 'isAlive',
     value: function isAlive() {
-      var _this3 = this;
+      var _this2 = this;
 
       return new Promise(function (resolve) {
-        (0, _request.post)(_this3.jsonrpc_url, {
+        (0, _request.post)(_this2.jsonrpc_url, {
           json: {
             jsonrpc: '2.0',
             method: 'ping',
@@ -131,7 +132,7 @@ var Server = function () {
   }, {
     key: 'send',
     value: function send(method, extraParams) {
-      var _this4 = this;
+      var _this3 = this;
 
       this._counter = this._counter + 1;
       var params = {
@@ -143,7 +144,7 @@ var Server = function () {
       var self = this;
       return new Promise(function (resolve, reject) {
         setTimeout(function () {
-          (0, _request.post)(_this4.jsonrpc_url, { json: params }, function (err, res, body) {
+          (0, _request.post)(_this3.jsonrpc_url, { json: params }, function (err, res, body) {
             if (err) return reject(err);
             if (body.error) return reject(body.error);
             return resolve(body.result);

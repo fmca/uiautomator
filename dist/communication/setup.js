@@ -28,9 +28,8 @@ var Setup = function () {
   _createClass(Setup, [{
     key: 'init',
     value: function init() {
-      console.log('initing');
-      // this._installIfNecessary();
-      // this._forward();
+      this._installIfNecessary();
+      this._forward();
       this._start();
       return Promise.resolve();
     }

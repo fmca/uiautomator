@@ -35,20 +35,21 @@ var masks = {
 };
 
 var Selector = function Selector(fields) {
+  var _this = this;
+
   _classCallCheck(this, Selector);
 
   this.mask = 0;
-  for (var i = 0; i < fields.length; i += 1) {
-    var field = fields[i];
+  Object.keys(fields).forEach(function (field) {
     var value = fields[field];
     if (value) {
-      this.mask = this.mask || masks[field];
+      _this.mask = _this.mask || masks[field];
     }
     if (field === 'childOrSiblingSelector') {
-      this[field] = new Selector(fields[field]);
+      _this[field] = new Selector(fields[field]);
     }
-    this[field] = value;
-  }
+    _this[field] = value;
+  });
 };
 
 exports.default = Selector;

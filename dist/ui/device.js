@@ -40,11 +40,7 @@ var Device = function () {
   _createClass(Device, [{
     key: 'connect',
     value: function connect() {
-      var _this = this;
-
-      return this._server.start().then(function () {
-        return Promise.resolve(_this);
-      });
+      return this._server.start();
     }
 
     /**
@@ -90,18 +86,18 @@ var Device = function () {
   }, {
     key: '_register',
     value: function _register(methods, prefix) {
-      var _this2 = this;
+      var _this = this;
 
       var _loop = function _loop(index) {
         var methodName = methods[index];
         var decamelizedMethodName = (0, _humps.decamelize)(methodName);
         if (prefix) {
-          _this2[methodName] = function () {
-            return _this2._server.send(prefix, [decamelizedMethodName]);
+          _this[methodName] = function () {
+            return _this._server.send(prefix, [decamelizedMethodName]);
           };
         } else {
-          _this2[methodName] = function () {
-            return _this2._server.send(methodName, []);
+          _this[methodName] = function () {
+            return _this._server.send(methodName, []);
           };
         }
       };
