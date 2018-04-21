@@ -31,8 +31,7 @@ const masks = {
 class Selector {
   constructor(fields) {
     this.mask = 0;
-    for (let i = 0; i < fields.length; i += 1) {
-      const field = fields[i];
+    Object.keys(fields).forEach((field) => {
       const value = fields[field];
       if (value) {
         this.mask = this.mask || masks[field];
@@ -41,7 +40,7 @@ class Selector {
         this[field] = new Selector(fields[field]);
       }
       this[field] = value;
-    }
+    });
   }
 }
 

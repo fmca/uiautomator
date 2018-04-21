@@ -10,15 +10,18 @@ class Setup {
     this._serial = options.serial;
   }
 
-  init(cb) {
+  /**
+   * @returns Promise
+   */
+  init() {
     this._installIfNecessary();
     this._forward();
     this._start();
-    cb();
+    return Promise.resolve();
   }
 
   _installIfNecessary() {
-    const packages = `${execSync('adb shell pm list packages')}`.split('\n');
+    const packages = execSync('adb shell pm list packages').toString().split('\n');
     let hasApp = false;
     let hasTestApp = false;
     for (let i = 0; i < packages.length; i += 1) {

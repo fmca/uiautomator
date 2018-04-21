@@ -2,9 +2,16 @@
   "name": "uiautomator-wrapper",
   "version": "0.0.5",
   "description": "NodeJS wrapper for UiAutomator",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "babel-node": "babel-node --presets=latest",
+    "start": "npm run babel-node -- ./src/test.js",
+    "build": "babel src -d dist --copy-files"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
   },
   "repository": {
     "type": "git",
@@ -22,6 +29,9 @@
   },
   "devDependencies": {
     "async": "^2.0.0-rc.5",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
