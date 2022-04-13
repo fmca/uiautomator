@@ -28,7 +28,7 @@
     "request": "^2.72.0"
   },
   "devDependencies": {
-    "async": "^2.0.0-rc.5",
+    "async": "^3.2.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
