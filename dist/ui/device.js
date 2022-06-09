@@ -83,6 +83,17 @@ var Device = function () {
     value: function info() {
       return this._server.send('deviceInfo', []);
     }
+
+    /**
+     * @returns Promise
+     */
+
+  }, {
+    key: 'setText',
+    value: function setText(selector, text) {
+      var preparedSelector = new _selector2.default(selector);
+      return this._server.send('setText', [preparedSelector, text]);
+    }
   }, {
     key: '_register',
     value: function _register(methods, prefix) {
