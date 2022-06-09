@@ -50,6 +50,14 @@ export default class Device {
     return this._server.send('deviceInfo', []);
   }
 
+  /**
+   * @returns Promise
+   */
+  setText(selector, text) {
+    const preparedSelector = new Selector(selector);
+    return this._server.send('setText', [preparedSelector, text]);
+  }
+
 
   _register(methods, prefix) {
     for (let index = 0; index < methods.length; index += 1) {
