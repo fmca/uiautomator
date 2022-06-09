@@ -90,6 +90,10 @@ Default options:
     * Supported Selectors:
         ```text```,```textContains```,```textMatches```,```textStartsWith```,```className```,```classNameMatches```,```description```,```descriptionContains```,```descriptionMatches```,```descriptionStartsWith```,```checkable```,```checked```,```clickable```,```longClickable```,```scrollable```,```enabled```,```focusable```,```focused```,```selected```,```packageName```,```packageNameMatches```,```resourceId```,```resourceIdMatches```,```index```,```instance```
         
+* Input text
+    ```javascript
+    device.setText({description: 'Message'}, 'Hello World')
+    ```
 
 ### Acknowledgement
 This package is inspired by [xiaocong/uiautomator](https://github.com/xiaocong/uiautomator) python library, even using its [android-uiautomator-server](https://github.com/xiaocong/android-uiautomator-server).
