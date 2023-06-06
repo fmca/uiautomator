@@ -36,7 +36,7 @@ var Setup = function () {
   }, {
     key: '_installIfNecessary',
     value: function _installIfNecessary() {
-      var packages = (0, _child_process.execSync)('adb shell pm list packages').toString().split('\n');
+      var packages = (0, _child_process.execSync)(['adb'].concat(this._serialArr()).concat(['shell', 'pm', 'list', 'packages']).join(' ')).toString().split('\n');
       var hasApp = false;
       var hasTestApp = false;
       for (var i = 0; i < packages.length; i += 1) {
@@ -47,7 +47,7 @@ var Setup = function () {
 
       if (!hasApp || !hasTestApp) {
         for (var index = 0; index < this._apks.length; index += 1) {
-          (0, _child_process.execSync)(['adb', 'install'].concat(this._serialArr()).concat([this._apks[index]]).join(' '));
+          (0, _child_process.execSync)(['adb'].concat(this._serialArr()).concat(['install', this._apks[index]]).join(' '));
         }
       }
     }

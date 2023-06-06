@@ -89,14 +89,14 @@ var Server = function () {
         var chosenResolve = parentResolve || resolve;
         var chosenReject = parentReject || reject;
         setTimeout(function () {
-          self.isAlive().then(function (alive) {
-            if (!alive) {
-              if (self.connectionTries > self.options.connectionMaxTries) {
-                return chosenReject();
-              }
-              return self.verifyConnection(chosenResolve, chosenReject);
-            }
+          self.isAlive().then(function () {
             return chosenResolve(self);
+          }).catch(function (err) {
+            if (self._connectionTries > self.options.connectionMaxTries) {
+              return chosenReject(err != null ? err : Error("Could not establish connection with device"));
+            }
+            self._connectionTries += 1;
+            return self.verifyConnection(chosenResolve, chosenReject);
           });
         }, _this.options.connectionTriesDelay);
       });
@@ -111,7 +111,7 @@ var Server = function () {
     value: function isAlive() {
       var _this2 = this;
 
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
         (0, _request.post)(_this2.jsonrpc_url, {
           json: {
             jsonrpc: '2.0',
@@ -120,7 +120,11 @@ var Server = function () {
             id: '1'
           }
         }, function (err, res, body) {
-          return resolve(!err && body && body.result === 'pong');
+          if (!err && body && body.result === 'pong') {
+            resolve();
+          } else {
+            reject(err);
+          }
         });
       });
     }

@@ -21,7 +21,9 @@ class Setup {
   }
 
   _installIfNecessary() {
-    const packages = execSync('adb shell pm list packages').toString().split('\n');
+    const packages = execSync(['adb'].concat(this._serialArr())
+                      .concat(['shell', 'pm', 'list', 'packages']).join(' '))
+                    .toString().split('\n');
     let hasApp = false;
     let hasTestApp = false;
     for (let i = 0; i < packages.length; i += 1) {
@@ -32,9 +34,8 @@ class Setup {
 
     if (!hasApp || !hasTestApp) {
       for (let index = 0; index < this._apks.length; index += 1) {
-        execSync(['adb', 'install']
-          .concat(this._serialArr())
-          .concat([this._apks[index]]).join(' '));
+        execSync(['adb'].concat(this._serialArr())
+          .concat(['install', this._apks[index]]).join(' '));
       }
     }
   }

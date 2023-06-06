@@ -58,15 +58,15 @@ class Server {
       const chosenResolve = parentResolve || resolve;
       const chosenReject = parentReject || reject;
       setTimeout(() => {
-        self.isAlive().then((alive) => {
-          if (!alive) {
-            if (self.connectionTries > self.options.connectionMaxTries) {
-              return chosenReject();
-            }
-            return self.verifyConnection(chosenResolve, chosenReject);
-          }
+        self.isAlive().then(() => {
           return chosenResolve(self);
-        });
+        }).catch((err) => {
+          if (self._connectionTries > self.options.connectionMaxTries) {
+            return chosenReject(err != null ? err : Error("Could not establish connection with device"));
+          }
+          self._connectionTries += 1;
+          return self.verifyConnection(chosenResolve, chosenReject);
+        })
       }, this.options.connectionTriesDelay);
     });
   }
@@ -75,7 +75,7 @@ class Server {
    * @returns Promise
    */
   isAlive() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       post(this.jsonrpc_url, {
         json: {
           jsonrpc: '2.0',
@@ -83,7 +83,13 @@ class Server {
           params: [],
           id: '1',
         },
-      }, (err, res, body) => resolve(!err && body && body.result === 'pong'));
+      }, (err, res, body) => {
+        if (!err && body && body.result === 'pong') {
+          resolve();
+        } else {
+          reject(err);
+        }
+      });
     });
   }
 

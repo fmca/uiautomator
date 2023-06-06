@@ -54,7 +54,7 @@ var device = new Device(options);
 Default options:
 ```javascript
 {
-    hostname: 'localhost',
+    hostname: '127.0.0.1',
     delay: 500, //delay between commands
     port: 9008,
     devicePort: 9008,
