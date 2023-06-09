@@ -5,7 +5,7 @@ import { format, resolve as urlResolve } from 'url';
 import Setup from './setup';
 
 const defaultOptions = {
-  hostname: 'localhost',
+  hostname: '127.0.0.1',
   delay: 500,
   port: 9008,
   devicePort: 9008,
@@ -43,10 +43,14 @@ class Server {
    * @returns Promise
    */
   stop() {
-    get(this.stop_url, {}, () => {});
-    this._setup.process().stdin.pause();
-    this._setup.process().kill();
-    return Promise.resolve();
+    const self = this;
+    return new Promise((resolve, reject) => {
+      get(this.stop_url, {timeout: 500}, (err, res, body) => {
+        self._setup.process().stdin.pause();
+        self._setup.process().kill();
+        resolve();
+      })
+    });
   }
 
   /**
@@ -75,8 +79,10 @@ class Server {
    * @returns Promise
    */
   isAlive() {
+    const self = this;
     return new Promise((resolve, reject) => {
       post(this.jsonrpc_url, {
+        timeout: self.options.connectionTriesDelay,
         json: {
           jsonrpc: '2.0',
           method: 'ping',

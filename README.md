@@ -15,9 +15,18 @@ var Device = require('uiautomator-wrapper');
 var device = new Device();
 device.connect()
     .then(() => device.home())
-    .then(() => device.click({ description: 'Apps' }))
-    .then(() => device.back())
-    .then(() => console.log('Finished'))
+    .then(() => device.click({description: 'Phone'}))
+    .then(() => device.click({text: 'Contacts'}))
+    .then(() => device.click({text: 'Create new contact'}))
+    .then(() => device.setText({text: 'First name'}, 'Test123'))
+    .then(() => device.click({text: 'Save'}))
+    .then(() => device.exists({descriptionContains: 'Test123'}))
+    .then((contactCreated) => {
+        console.log("contact created?", contactCreated);
+        return device.back()
+    })
+    .then(() => device.disconnect())
+    .then(() -> console.log("Finished"))
     .catch((err) => console.error(err))
 
 ```
@@ -30,8 +39,14 @@ const test = async () => {
   const device = new Device();
   await device.connect();
   await device.home();
-  await device.click({ description: 'Apps' });
+  await device.click({description: 'Phone'});
+  await device.click({text: 'Create new contact'});
+  await device.setText({text: 'First name'}, 'Test123');
+  await device.click({text: 'Save'});
+  let contactCreated = await device.exists({descriptionContains: 'Test123'});
+  console.log("contact created?", contactCreated);
   await device.back();
+  await device.disconnect();
 };
 
 test()
@@ -58,7 +73,7 @@ Default options:
     delay: 500, //delay between commands
     port: 9008,
     devicePort: 9008,
-    connectionMaxTries: 5,
+    connectionMaxTries: 3,
     connectionTriesDelay: 1000,
     serial: undefined //Not necessary if there is only one device available
 }
@@ -86,13 +101,14 @@ Default options:
 * Selectors
     ```javascript
     device.click({description: 'Apps'});
+    device.exists({text: 'Contacts'});
     ```
     * Supported Selectors:
         ```text```,```textContains```,```textMatches```,```textStartsWith```,```className```,```classNameMatches```,```description```,```descriptionContains```,```descriptionMatches```,```descriptionStartsWith```,```checkable```,```checked```,```clickable```,```longClickable```,```scrollable```,```enabled```,```focusable```,```focused```,```selected```,```packageName```,```packageNameMatches```,```resourceId```,```resourceIdMatches```,```index```,```instance```
         
 * Input text
     ```javascript
-    device.setText({description: 'Message'}, 'Hello World')
+    device.setText({description: 'Message'}, 'Hello World');
     ```
 
 ### Acknowledgement

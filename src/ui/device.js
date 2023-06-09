@@ -22,9 +22,16 @@ export default class Device {
   }
 
   /**
-   * @returns Promise
+   * @deprecated Please use disconnect() instead
    */
   stop() {
+    return this.disconnect();
+  }
+
+  /**
+   * @returns Promise
+   */
+  disconnect() {
     return this._server.stop();
   }
 
@@ -41,6 +48,14 @@ export default class Device {
   click(selector) {
     const preparedSelector = new Selector(selector);
     return this._server.send('click', [preparedSelector]);
+  }
+
+  /**
+   * @returns Promise
+   */
+  exists(selector) {
+    const preparedSelector = new Selector(selector);
+    return this._server.send('exist', [preparedSelector]);
   }
 
   /**
