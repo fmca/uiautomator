@@ -8,8 +8,8 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [21, 33]
-        node-version: [14.x, 20.x]
+        api-level: [21, 29]
+        node-version: [14.x, 18.x]
     steps:
       - name: checkout
         uses: actions/checkout@v3
