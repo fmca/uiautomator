@@ -11,7 +11,7 @@ describe('Smoke tests for one device', () => {
 
     test('connect', () => {
         return device.connect();
-    }, 15000)
+    })
 
    
     test('check simple command home', () => {
@@ -38,7 +38,7 @@ describe('Smoke tests for one device', () => {
             .then(() => device.click({text: 'Save'}))
             .then(() => device.exists({descriptionContains: 'Test123'}))
             .then((contactCreated) => expect(contactCreated).toBe(true)) // check
-    }, 15000);
+    });
 
     afterAll(() => {
         return device.disconnect();
