@@ -23,7 +23,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: '${{ matrix.api-level }}'
-          profile: 3.2" QVGA (ADP2)
+          profile: 3.2in QVGA (ADP2)
           disable-animations: true
           target: google_apis
           script: npm run build && npm test
