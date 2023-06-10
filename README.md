@@ -111,5 +111,11 @@ Default options:
     device.setText({description: 'Message'}, 'Hello World');
     ```
 
+* Swipe
+    ```javascript
+    device.swipe(sourceX, sourceY, destX, destY);
+    ```
+
+
 ### Acknowledgement
 This package is inspired by [xiaocong/uiautomator](https://github.com/xiaocong/uiautomator) python library, even using its [android-uiautomator-server](https://github.com/xiaocong/android-uiautomator-server).

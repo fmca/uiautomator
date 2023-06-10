@@ -31,11 +31,19 @@ describe('Smoke tests for one device', () => {
 
     test('add contact', () => {
         return device.home()
+            .then(() => device.swipe(160, 460, 160, 200)) // Open apps tray
             .then(() => device.click({description: 'Phone'}))
             .then(() => device.click({text: 'Contacts'}))
-            .then(() => device.click({text: 'Create new contact'}))
+            .then(() => device.click({text: 'CREATE NEW CONTACT'}))
+            .then(() => device.exists({text: 'CANCEL'}))
+            .then((popup) => {
+                if (popup) {
+                    return device.click({text: 'CANCEL'});
+                }
+                return Promise.resolve();
+            })
             .then(() => device.setText({text: 'First name'}, 'Test123'))
-            .then(() => device.click({text: 'Save'}))
+            .then(() => device.click({text: 'SAVE'}))
             .then(() => device.exists({descriptionContains: 'Test123'}))
             .then((contactCreated) => expect(contactCreated).toBe(true)) // check
     });

@@ -73,6 +73,13 @@ export default class Device {
     return this._server.send('setText', [preparedSelector, text]);
   }
 
+  /**
+   * @returns Promise
+   */
+  swipe(sourceX, sourceY, destX, destY, steps=10) {
+    return this._server.send('swipe', [sourceX, sourceY, destX, destY, steps]);
+  }
+
 
   _register(methods, prefix) {
     for (let index = 0; index < methods.length; index += 1) {
