@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "babel-node": "babel-node --presets=latest",
-    "test": "jest --detectOpenHandles --runInBand --testTimeout=120000 dist",
+    "test": "jest --detectOpenHandles --testTimeout=120000 dist",
     "build": "babel src -d dist --copy-files"
   },
   "babel": {

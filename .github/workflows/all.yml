@@ -23,6 +23,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: '${{ matrix.api-level }}'
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
           target: google_apis
           script: npm run build && npm test
   deploy:
